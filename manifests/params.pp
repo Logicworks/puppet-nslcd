@@ -22,6 +22,8 @@ class nslcd::params {
   $ldap_ssl = false
   $ldap_tls_reqcert = undef
   $ldap_scope = undef
+  $ldap_pagesize = 0
+  $ldap_referrals = 'yes'
 
   # This mandates which distributions are supported
   # To add support for other distributions simply add

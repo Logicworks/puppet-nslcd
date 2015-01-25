@@ -65,6 +65,15 @@
 #   Specifies the search scope
 #   Valid values: <tt>sub</tt>, <tt>one</tt>, <tt>base</tt>
 #
+# [*ldap_pagesize*]
+#   Specifies the LDAP paging size. Recommended with AD server.
+#   Valid values: <tt>1000</tt>
+#
+# [*ldap_referrals*]
+#   Specifies whether automatic referral chasing should be enabled.
+#   Recommended with Active Directory LDAP servers.
+#   Valid values: <tt>yes</tt>, <tt>no</tt>
+#
 # [*parameters*]
 #   Hash variable to pass to nslcd
 #   Valid values: hash, ex:  <tt>{ 'option' => 'value' }</tt>
@@ -107,6 +116,8 @@ class nslcd (
   $ldap_ssl         = 'UNDEF',
   $ldap_tls_reqcert = 'UNDEF',
   $ldap_scope       = 'UNDEF',
+  $ldap_pagesize    = 'UNDEF',
+  $ldap_referrals   = 'UNDEF',
   $parameters       = {}
 ) {
 
@@ -172,6 +183,14 @@ class nslcd (
   $ldap_scope_real = $ldap_scope ? {
     'UNDEF' => $nslcd::params::ldap_scope,
     default => $ldap_scope
+  }
+  $ldap_pagesize_real = $ldap_pagesize ? {
+    'UNDEF' => $nslcd::params::ldap_pagesize,
+    default => $ldap_pagesize
+  }
+  $ldap_referrals_real = $ldap_referrals ? {
+    'UNDEF' => $nslcd::params::ldap_referrals,
+    default => $ldap_referrals
   }
 
   # Input validation
