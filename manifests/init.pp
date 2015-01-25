@@ -89,6 +89,7 @@
 #
 # This module has been tested on the following platforms
 # * Ubuntu LTS 10.04, 12.04
+# * RHEL 6.4
 #
 class nslcd (
   $ensure           = 'UNDEF',

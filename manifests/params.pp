@@ -36,6 +36,15 @@ class nslcd::params {
       $config_file_mode = '0640'
       $run_dir = '/var/run/nslcd'
     }
+    'RedHat', 'CentOS', 'Fedora', 'Scientific', 'SL', 'SLC', 'Ascendos', 'CloudLinux', 'PSBM', 'OracleLinux', 'OVS', 'OEL', 'Amazon', 'XenServer': {
+       $user = 'nslcd'
+       $group = 'ldap'
+       $package = 'nss-pam-ldapd'
+       $service = 'nslcd'
+       $config_file = '/etc/nslcd.conf'
+       $config_file_mode = '0600'
+       $run_dir = '/var/run/nslcd'
+    }
     default: {
       fail("Unsupported operatingsystem ${::operatingsystem}")
     }
