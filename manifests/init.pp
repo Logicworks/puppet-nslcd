@@ -208,14 +208,20 @@ class nslcd (
   # Insert class parameters into hash
   # This simplifies the erb template and makes
   # it less verbose
-  $parameters['uri'] = $ldap_uri_real
-  $parameters['base'] = $ldap_base_real
-  $parameters['ldap_version'] = $ldap_version_real
-  $parameters['binddn'] = $ldap_binddn_real
-  $parameters['bindpw'] = $ldap_bindpw_real
-  $parameters['ssl'] = $ldap_ssl_real
-  $parameters['tls_reqcert'] = $ldap_tls_reqcert_real
-  $parameters['scope'] = $ldap_scope_real
+  $general_parameters = {
+    'uri'          => $ldap_uri_real,
+    'base'         => $ldap_base_real,
+    'ldap_version' => $ldap_version_real,
+    'binddn'       => $ldap_binddn_real,
+    'bindpw'       => $ldap_bindpw_real,
+    'ssl'          => $ldap_ssl_real,
+    'tls_reqcert'  => $ldap_tls_reqcert_real,
+    'scope'        => $ldap_scope_real,
+    'pagesize'     => $ldap_pagesize_real,
+    'referrals'    => $ldap_referrals_real,
+  }
+
+  $full_parameters = merge($parameters, $general_parameters)
 
   # 'unmanaged' is an unknown service state
   $ensure_service = $service_status_real ? {
