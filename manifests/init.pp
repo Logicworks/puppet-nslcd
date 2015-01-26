@@ -65,6 +65,15 @@
 #   Specifies the search scope
 #   Valid values: <tt>sub</tt>, <tt>one</tt>, <tt>base</tt>
 #
+# [*ldap_pagesize*]
+#   Specifies the LDAP paging size. Recommended with AD server.
+#   Valid values: <tt>1000</tt>
+#
+# [*ldap_referrals*]
+#   Specifies whether automatic referral chasing should be enabled.
+#   Recommended with Active Directory LDAP servers.
+#   Valid values: <tt>yes</tt>, <tt>no</tt>
+#
 # [*parameters*]
 #   Hash variable to pass to nslcd
 #   Valid values: hash, ex:  <tt>{ 'option' => 'value' }</tt>
@@ -89,6 +98,7 @@
 #
 # This module has been tested on the following platforms
 # * Ubuntu LTS 10.04, 12.04
+# * RHEL 6.4
 #
 class nslcd (
   $ensure           = 'UNDEF',
@@ -106,6 +116,8 @@ class nslcd (
   $ldap_ssl         = 'UNDEF',
   $ldap_tls_reqcert = 'UNDEF',
   $ldap_scope       = 'UNDEF',
+  $ldap_pagesize    = 'UNDEF',
+  $ldap_referrals   = 'UNDEF',
   $parameters       = {}
 ) {
 
@@ -172,6 +184,14 @@ class nslcd (
     'UNDEF' => $nslcd::params::ldap_scope,
     default => $ldap_scope
   }
+  $ldap_pagesize_real = $ldap_pagesize ? {
+    'UNDEF' => $nslcd::params::ldap_pagesize,
+    default => $ldap_pagesize
+  }
+  $ldap_referrals_real = $ldap_referrals ? {
+    'UNDEF' => $nslcd::params::ldap_referrals,
+    default => $ldap_referrals
+  }
 
   # Input validation
   $valid_ensure_values = [ 'present', 'absent', 'purged' ]
@@ -188,14 +208,20 @@ class nslcd (
   # Insert class parameters into hash
   # This simplifies the erb template and makes
   # it less verbose
-  $parameters['uri'] = $ldap_uri_real
-  $parameters['base'] = $ldap_base_real
-  $parameters['ldap_version'] = $ldap_version_real
-  $parameters['binddn'] = $ldap_binddn_real
-  $parameters['bindpw'] = $ldap_bindpw_real
-  $parameters['ssl'] = $ldap_ssl_real
-  $parameters['tls_reqcert'] = $ldap_tls_reqcert_real
-  $parameters['scope'] = $ldap_scope_real
+  $general_parameters = {
+    'uri'          => $ldap_uri_real,
+    'base'         => $ldap_base_real,
+    'ldap_version' => $ldap_version_real,
+    'binddn'       => $ldap_binddn_real,
+    'bindpw'       => $ldap_bindpw_real,
+    'ssl'          => $ldap_ssl_real,
+    'tls_reqcert'  => $ldap_tls_reqcert_real,
+    'scope'        => $ldap_scope_real,
+    'pagesize'     => $ldap_pagesize_real,
+    'referrals'    => $ldap_referrals_real,
+  }
+
+  $full_parameters = merge($parameters, $general_parameters)
 
   # 'unmanaged' is an unknown service state
   $ensure_service = $service_status_real ? {

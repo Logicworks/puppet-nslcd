@@ -9,7 +9,7 @@ uid <%= scope.lookupvar('nslcd::params::user') %>
 gid <%= scope.lookupvar('nslcd::params::group') %>
 
 # Configurable parameters
-<%- parameters.sort_by { |k,v| k }.each do |k,v|
+<%- full_parameters.sort_by { |k,v| k }.each do |k,v|
   if v != :undef
     if boolean_mapper.has_key?(v) -%>
 <%= k %> <%= boolean_mapper[v] %>

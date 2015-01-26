@@ -22,6 +22,8 @@ class nslcd::params {
   $ldap_ssl = false
   $ldap_tls_reqcert = undef
   $ldap_scope = undef
+  $ldap_pagesize = 0
+  $ldap_referrals = 'yes'
 
   # This mandates which distributions are supported
   # To add support for other distributions simply add
@@ -35,6 +37,15 @@ class nslcd::params {
       $config_file = '/etc/nslcd.conf'
       $config_file_mode = '0640'
       $run_dir = '/var/run/nslcd'
+    }
+    'RedHat', 'CentOS', 'Fedora', 'Scientific', 'SL', 'SLC', 'Ascendos', 'CloudLinux', 'PSBM', 'OracleLinux', 'OVS', 'OEL', 'Amazon', 'XenServer': {
+       $user = 'nslcd'
+       $group = 'ldap'
+       $package = 'nss-pam-ldapd'
+       $service = 'nslcd'
+       $config_file = '/etc/nslcd.conf'
+       $config_file_mode = '0600'
+       $run_dir = '/var/run/nslcd'
     }
     default: {
       fail("Unsupported operatingsystem ${::operatingsystem}")
