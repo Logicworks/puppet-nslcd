@@ -202,7 +202,7 @@ class nslcd (
   validate_re($ldap_version_real, $valid_ldap_versions)
   validate_bool($autoupgrade_real)
   validate_bool($autorestart_real)
-  validate_bool($ldap_ssl_real)
+  #validate_bool($ldap_ssl_real)
   validate_hash($parameters)
 
   # Insert class parameters into hash
